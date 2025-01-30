@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        {% if error %}
+        // Show the alert box when there's an error message
+        alert("{{ error }}");
+        {% endif %}
+    </script>
+</head>
+
+<body>
+    <h1>Wordle Game</h1>
+    <div id="grid">
+        <!-- Loop through 6 attempts -->
+        {% for attempt in range(6) %}
+            <div class="row">
+                {% for i in range(5) %}
+                    <div class="cell {% if attempt < guesses|length %} {{ guesses[attempt].result[i] }} {% endif %}">
+                        <!-- Display guess letters if the attempt is <= current attempts -->
+                        {% if attempt < guesses|length %}
+                            {{ guesses[attempt].guess[i] }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <form action="/guess" method="POST">
+        <input type="text" name="guess" maxlength="5" placeholder="Enter a 5-letter word" required>
+        <button type="submit">Submit</button>
+    </form>
+    <!-- Display Used Letters -->
+    <div class="letter-display">
+        <h3 class="letter-display-headers">Used Letters:</h3>
+        <ul>
+            {% for letter in used_letters %}
+                <li>{{ letter }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Display Remaining Letters -->
+     <div class="letter-display">
+        <h3 class="letter-display-headers">Remaining Letters:</h3>
+        <ul>
+            {% for letter in remaining_letters %}
+                <li>{{ letter }}</li>
+            {% endfor %}
+        </ul> 
+     </div>
+       
+
+    {% if message %}
+        <p>Result: {{ message }}</p>
+    {% endif %}
+</body>
+
+</html>
