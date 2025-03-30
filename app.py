@@ -97,4 +97,4 @@ def guess():
     return render_template('index.html', attempts=session["attempts"], guesses=session["guesses"], used_letters=sorted(list(session["used_letters"])), remaining_letters=sorted(list(session["remaining_letters"])))
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(port=8000)
